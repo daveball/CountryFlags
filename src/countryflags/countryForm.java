@@ -5,6 +5,8 @@
  */
 package countryflags;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  *
  * @author davem
@@ -16,6 +18,8 @@ public class countryForm extends javax.swing.JFrame {
      */
     public countryForm() {
         initComponents();
+        
+        setUpCombo();
     }
 
     /**
@@ -103,7 +107,40 @@ public class countryForm extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void setUpCombo(){
+        try
+        {
+                ResultSet rs = DataAccessLayer.GetCountries();
+                    comboCountry.removeAllItems();
+                while (rs.next()) 
+                {   String  Country = rs.getString("Country");
+                    comboCountry.addItem(Country);
+                }    
+                comboCountry.setSelectedIndex(0);
 
+        }
+        catch(SQLException e)
+        {
+                System.out.println("SQL exception occured" + e);
+             
+        }
+
+    }
+  
+    private void changeSelected(){
+        try
+        {
+            
+            
+        }
+        catch(SQLException e)
+        {
+                System.out.println("SQL exception occured" + e);
+             
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboCountry;
     private javax.swing.JLabel lblCapital;
