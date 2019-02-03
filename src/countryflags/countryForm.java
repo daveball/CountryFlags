@@ -7,6 +7,8 @@ package countryflags;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.awt.event.*; 
 /**
  *
  * @author davem
@@ -38,6 +40,11 @@ public class countryForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         comboCountry.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCountry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboCountryActionPerformed(evt);
+            }
+        });
 
         lblCapital.setText("Place holder for Capital");
 
@@ -72,6 +79,11 @@ public class countryForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void comboCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCountryActionPerformed
+        // TODO add your handling code here 
+        //comboChange();
+    }//GEN-LAST:event_comboCountryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -117,8 +129,21 @@ public class countryForm extends javax.swing.JFrame {
                 {   String  Country = rs.getString("Country");
                     comboCountry.addItem(Country);
                 }    
+                
                 comboCountry.setSelectedIndex(0);
-
+                String theSelectedImageFilePath = "/images/" + comboCountry.getSelectedItem().toString()+ ".png";
+                //lblOutput.setText(theSelectedImageFilePath);
+                //lblFlag.setText("");
+              lblCapital.setText(DataAccessLayer.GetCapital(comboCountry.getSelectedItem().toString()));
+               lblFlag.setIcon(new javax.swing.ImageIcon(getClass().getResource(theSelectedImageFilePath)));
+               
+               //comboCountry.setActionCommand(comboChange());
+               comboCountry.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent arg0) {
+            //Do Something
+            comboChange()
+        }
+                });
         }
         catch(SQLException e)
         {
@@ -128,10 +153,15 @@ public class countryForm extends javax.swing.JFrame {
 
     }
   
-    private void changeSelected(){
+    private void comboChange(){
         try
-        {
+        {   
             
+            String theSelectedImageFilePath = "/images/" + comboCountry.getSelectedItem().toString()+ ".png";
+            //lblOutput.setText(theSelectedImageFilePath);
+            lblFlag.setIcon(new javax.swing.ImageIcon(getClass().getResource(theSelectedImageFilePath)));
+            lblCapital.setText( DataAccessLayer.GetCapital( comboCountry.getSelectedItem().toString()));
+          
             
         }
         catch(SQLException e)
